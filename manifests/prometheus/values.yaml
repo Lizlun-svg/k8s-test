@@ -1,0 +1,17 @@
+# manifests/prometheus/values.yaml
+prometheus:
+  service:
+    type: NodePort
+  
+  persistence:
+    enabled: true
+    size: 20Gi
+
+grafana:
+  enabled: true
+  service:
+    type: NodePort
+  adminPassword: admin
+
+alertmanager:
+  enabled: true
