@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-replicaset
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/Lizlun-svg/k8s-test'  # 替换为你的仓库URL
+    targetRevision: HEAD
+    path: manifests  # ReplicaSet 文件所在的路径
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default  # 部署到的命名空间
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
