@@ -1,22 +1,16 @@
+# prometheus-fixed.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus-stack
+  name: prometheus-standalone
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/prometheus-community/helm-charts
+    # 使用标准的 Kubernetes 清单，不依赖外部 Helm 仓库
+    repoURL: https://github.com/Lizlun-svg/k8s-test  # 替换为你的仓库
     targetRevision: main
-    chart: kube-prometheus-stack
-    helm:
-      valueFiles:
-      - values.yaml
-      parameters:
-      - name: "grafana.enabled"
-        value: "true"
-      - name: "prometheus.service.type"
-        value: "NodePort"
+    path: manifests/prometheus  # 指向包含 Kubernetes 清单的目录
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -24,3 +18,5 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
